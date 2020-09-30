@@ -1,1 +1,24 @@
+https://www.tutorialspoint.com/cassandra/cassandra_architecture.htm
 
+Cassandra database is distributed over several machines that operate together. The outermost container is known as the Cluster. 
+For failure handling, every node contains a replica, and in case of a failure, the replica takes charge. 
+Cassandra arranges the nodes in a cluster, in a ring format, and assigns data to them.
+
+#Keyspace
+Keyspace is the outermost container for data in Cassandra. The basic attributes of a Keyspace in Cassandra are
+  Replication factor 
+  Replica placement strategy
+  Column families 
+
+
+from cassandra.cluster import Cluster
+cluster = Cluster(['127.0.0.1'])
+session = cluster.connect() 
+keyspace_query = """CREATE KEYSPACE IF NOT EXISTS sparkify 
+                with REPLICATION = 
+                { 'class' : 'SimpleStrategy', 'replication_factor' : 1 }
+            """
+session.execute(keyspace_query)
+session.set_keyspace('sparkify')
+create_query1 = """CREATE TABLE IF NOT EXISTS session_item (artist text, song text, length float, sessionId int, itemInSession int, PRIMARY KEY (sessionId, itemInSession))"""
+session.execute(create_query1)
