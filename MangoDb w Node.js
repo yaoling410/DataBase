@@ -79,8 +79,15 @@ db.collection.replaceOne()
 #DELETE
 db.collection.deleteOne() 
 db.collection.deleteMany() 
+#AGGREGATE
+db.orders.aggregate([
+   { $match: { status: "A" } },
+   { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }
+])
+/* First Stage: The $match stage filters the documents by the status field and passes to the next stage those documents that have status equal to "A".
+Second Stage: The $group stage groups the documents by the cust_id field to calculate the sum of the amount for each unique cust_id.*/
 
-#sameples
+###sameples
 db.inventory.find( { tags: ["red", "blank"] } ) #Match an Embedded/Nested Document
 db.inventory.find( { status: "A" }, { item: 1, status: 1 } ) #Return the Specified Fields and the _id Field Only
 db.inventory.find( { 'instock.0.qty': { $lte: 20 } } ) #Query for a Document Nested in an Array
